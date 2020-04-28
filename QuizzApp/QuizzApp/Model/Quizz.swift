@@ -10,6 +10,7 @@ import Foundation
 
 struct Quizz {
     
+    var score: Int = 0
     var questionNumber: Int = 0
     var quizz = [
         Question(text: "Four + two is equal to 6", answer: "True"),
@@ -34,11 +35,13 @@ struct Quizz {
             questionNumber += 1
         } else {
             questionNumber = 0
+            score = 0
         }
     }
     
-    func checkAnswer(userAnswer: String) -> Bool {
+    mutating func checkAnswer(userAnswer: String) -> Bool {
         if userAnswer == quizz[questionNumber].answer {
+            score += 1
             return true
         } else {
             return false
@@ -51,6 +54,10 @@ struct Quizz {
     
     func getprogress() -> Float {
         return Float(questionNumber + 1) / Float(quizz.count)
+    }
+    
+    func getScore() -> Int {
+       return score
     }
     
 }
