@@ -16,11 +16,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButton: UIButton!
     
     @IBOutlet var buttonContainerViewCollection: [UIView]!
+    
+    var quizz = Quizz()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonViewStyle()
-        progressBar.progress = 0.7
+        updateUI()
     }
     
     private func setButtonViewStyle() {
@@ -28,7 +30,27 @@ class ViewController: UIViewController {
     }
 
     @IBAction func answerTapped(_ sender: UIButton) {
+        guard let userAnswer = sender.currentTitle else { return }
+        let userIsRight = quizz.checkAnswer(userAnswer: userAnswer)
+        
+        if userIsRight {
+            sender.backgroundColor = #colorLiteral(red: 0.3333333333, green: 0.6823529412, blue: 0.5843137255, alpha: 1)
+        } else {
+            sender.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        }
+        quizz.nextQuestion()
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+    }
+    
+    @objc func updateUI() {
+        questionLabel.text = quizz.getQuestionText()
+        progressBar.progress = quizz.getprogress()
+        trueButton.backgroundColor = .clear
+        falseButton.backgroundColor = .clear
+        
     }
     
 }
+
+
 
